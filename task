@@ -1,0 +1,48 @@
+import os
+import random
+import webbrowser
+
+def recommend_tasks(user_mood):
+    # Define the folder path for the tasks
+    folder_path = r"C:\Users\Diya\Desktop\MINI\ta"
+
+    # Define the file names for each emotion
+    file_names = {
+        'happy': 'happy.txt',
+        'sad': 'sad.txt',
+        'angry': 'angry.txt'
+    }
+
+    # Check if the user's mood is valid
+    if user_mood not in file_names:
+        print("Invalid mood. Please choose from: happy, sad, angry.")
+        return
+
+    # Get the file path for the given mood
+    file_path = os.path.join(folder_path, file_names[user_mood])
+
+    # Load tasks and URLs from the file
+    tasks = []
+    urls = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            task, url = line.strip().split(',')
+            tasks.append(task)
+            urls.append(url)
+
+    # Check if there are tasks for the given mood
+    if not tasks:
+        print("No tasks found for the given mood.")
+        return
+
+    # Randomly select a task
+    random_index = random.randint(0, len(tasks) - 1)
+    selected_task = tasks[random_index]
+    selected_url = urls[random_index]
+
+    print(f"Recommended Task for {user_mood}: {selected_task}")
+    webbrowser.open(selected_url)
+
+# Manually get user's mood input
+user_mood = input("Enter your mood (happy, sad, angry): ")
+recommend_tasks(user_mood)
